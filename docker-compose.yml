@@ -1,0 +1,23 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # Tên dịch vụ của chúng ta
+  bola-auth-app:
+    # Build image từ Dockerfile trong thư mục hiện tại (.)
+    build: .
+    # Đặt tên cho container để dễ nhận biết
+    container_name: bola-auth-app
+    # Ánh xạ cổng 3000 của máy host vào cổng 3000 của container
+    ports:
+      - "3000:3000"
+    # env_file giúp container đọc được các biến trong file .env của máy host
+    # Đây là cách để truyền JWT_SECRET vào container
+    env_file:
+      - .env
+    # Volumes giúp đồng bộ code giữa máy host và container
+    # Khi bạn thay đổi code trên máy, container sẽ tự động cập nhật
+    volumes:
+      - .:/usr/src/app
+      # Dòng này để tránh ghi đè thư mục node_modules bên trong container
+      - /usr/src/app/node_modules
